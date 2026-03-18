@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+
+# local storage (demo)
+data/users.json
+data/messages.json
+
+# user uploads
+uploads/
+

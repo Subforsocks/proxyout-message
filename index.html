@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proxyout Super Tuff Private Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand__dot"></div>
+          <div class="brand__title">Proxyout Super Tuff Private Chat</div>
+        </div>
+        <div class="topbar__right">
+          <button id="btnToggleTabHint" class="ghost" title="Tab toggles chat">Tab</button>
+          <button id="btnProfile" class="ghost" title="Profile" style="display: none">Profile</button>
+          <button id="btnLogout" class="ghost" title="Log out" style="display: none">Logout</button>
+        </div>
+      </div>
+
+      <div id="authView" class="auth">
+        <div class="auth__card">
+          <div class="auth__tabs">
+            <button id="tabLogin" class="tab tab--active">Login</button>
+            <button id="tabRegister" class="tab">Register</button>
+          </div>
+
+          <div id="authError" class="alert" style="display: none"></div>
+
+          <form id="loginForm" class="form">
+            <label class="field">
+              <span>Username</span>
+              <input id="loginUsername" autocomplete="username" required />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input id="loginPassword" type="password" autocomplete="current-password" required />
+            </label>
+            <button class="primary" type="submit">Log in</button>
+          </form>
+
+          <form id="registerForm" class="form" style="display: none">
+            <div class="twoCol">
+              <label class="field">
+                <span>First name (real)</span>
+                <input id="regFirstName" autocomplete="given-name" required />
+              </label>
+              <label class="field">
+                <span>Last name (real)</span>
+                <input id="regLastName" autocomplete="family-name" required />
+              </label>
+            </div>
+            <div class="hint">
+              Both <b>FIRST NAME</b> and <b>LAST NAME</b> must be real and properly formatted (e.g.,
+              <b>Ricardo Sanchez</b>). Fake names will be rejected.
+            </div>
+            <label class="field">
+              <span>Username</span>
+              <input id="regUsername" autocomplete="username" required />
+              <div class="field__hint">3–20 chars, letters/numbers/_ only</div>
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input id="regPassword" type="password" autocomplete="new-password" required />
+              <div class="field__hint">At least 6 characters</div>
+            </label>
+            <button class="primary" type="submit">Create account</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="chatView" class="layout" style="display: none">
+        <aside class="sidebar">
+          <div class="search">
+            <input id="userSearch" placeholder="Search users…" />
+          </div>
+          <div id="usersList" class="users"></div>
+        </aside>
+
+        <main class="main">
+          <div id="chatHeader" class="chatHeader">
+            <div class="chatHeader__left">
+              <div id="chatWithAvatar" class="avatar avatar--lg"></div>
+              <div class="chatHeader__meta">
+                <div id="chatWithName" class="chatHeader__name">Select a user</div>
+                <div id="chatWithStatus" class="chatHeader__status">—</div>
+              </div>
+            </div>
+            <div class="chatHeader__right">
+              <button id="btnVoiceCall" class="ghost" disabled>Voice</button>
+              <button id="btnVideoCall" class="ghost" disabled>Video</button>
+            </div>
+          </div>
+
+          <div id="messages" class="messages"></div>
+
+          <form id="messageForm" class="composer">
+            <input id="messageInput" placeholder="Message…" disabled />
+            <button class="primary" type="submit" disabled id="btnSend">Send</button>
+          </form>
+        </main>
+      </div>
+
+      <div id="callOverlay" class="overlay" style="display: none">
+        <div class="overlay__card">
+          <div class="overlay__title" id="callTitle">Call</div>
+          <div class="overlay__sub" id="callSub">—</div>
+          <div class="callGrid">
+            <video id="localVideo" autoplay playsinline muted></video>
+            <video id="remoteVideo" autoplay playsinline></video>
+          </div>
+          <div class="overlay__actions">
+            <button id="btnAcceptCall" class="primary" style="display: none">Accept</button>
+            <button id="btnHangup" class="danger">Hang up</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="profileModal" class="modal" style="display: none">
+        <div class="modal__card">
+          <div class="modal__title">Your profile</div>
+          <div class="modal__sub">You can change your username and profile picture. Your real name is locked.</div>
+          <div id="profileError" class="alert" style="display: none"></div>
+
+          <div class="profileRow">
+            <div class="avatar avatar--xl" id="meAvatar"></div>
+            <div class="profileMeta">
+              <div class="profileName" id="meRealName">—</div>
+              <div class="profileUser">@<span id="meUsername">—</span></div>
+            </div>
+          </div>
+
+          <form id="usernameForm" class="form form--compact">
+            <label class="field">
+              <span>New username</span>
+              <input id="newUsername" placeholder="letters/numbers/_ (3–20)" />
+            </label>
+            <button class="primary" type="submit">Update username</button>
+          </form>
+
+          <form id="avatarForm" class="form form--compact">
+            <label class="field">
+              <span>Profile picture</span>
+              <input id="avatarFile" type="file" accept="image/*" />
+            </label>
+            <button class="primary" type="submit">Upload picture</button>
+          </form>
+
+          <div class="modal__actions">
+            <button id="btnCloseProfile" class="ghost" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
+
