@@ -1,0 +1,28 @@
+# Node / Express
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files (keep secrets out of GitHub)
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+.cursor/
+
+# Runtime generated files
+/uploads/
+/data/users.json
+/data/messages.json
+/data/groups.json
+/data/groupInvites.json
+
+# Coverage / test output
+coverage/
+.nyc_output/
+
+

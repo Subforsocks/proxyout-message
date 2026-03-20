@@ -1,0 +1,29 @@
+[
+  {
+    "id": "6cd6d83a-61b9-4aba-9101-8432218dd451",
+    "username": "isaacfr",
+    "passwordHash": "$2b$10$sblFFl2tuuB78EmIWiMMSO.VeAqa5bFBO6poXybshFZlqsy8LqRHO",
+    "firstName": "My",
+    "lastName": "Nigga",
+    "avatarUrl": "/uploads/1773984898097-eb66260e-2184-4d1b-9d88-571c11be9276.jpeg",
+    "createdAt": 1773984872536
+  },
+  {
+    "id": "53f9d6c3-ed7d-48ad-96be-5b80d815f8c3",
+    "username": "wbro",
+    "passwordHash": "$2b$10$11/4JG776i3ryoZhiKEKIe5Nfdbu4/.Tpd4YctjuvIu1OOhFcrSCe",
+    "firstName": "Isaac",
+    "lastName": "Sanchez",
+    "avatarUrl": null,
+    "createdAt": 1773984951268
+  },
+  {
+    "id": "08e1ca17-2809-41a8-a7c7-3ea7f0c72be0",
+    "username": "wbrod",
+    "passwordHash": "$2b$10$KyEkc0l2f5aeaB/wgAi/eu2RY56jaabAkSDp0XCdibEFV4m.WquC.",
+    "firstName": "Siuggad",
+    "lastName": "Sanchez",
+    "avatarUrl": null,
+    "createdAt": 1773985120162
+  }
+]

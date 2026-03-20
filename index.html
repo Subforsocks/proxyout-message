@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proxyout Super Tuff Private Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand__dot"></div>
+          <div class="brand__title">Proxyout Super Tuff Private Chat</div>
+        </div>
+        <div class="topbar__right">
+          <button id="btnToggleTabHint" class="ghost" title="Tab toggles chat">Tab</button>
+          <button id="btnProfile" class="ghost" title="Profile" style="display: none">Profile</button>
+          <button id="btnLogout" class="ghost" title="Log out" style="display: none">Logout</button>
+        </div>
+      </div>
+
+      <div id="authView" class="auth">
+        <div class="auth__card">
+          <div class="auth__tabs">
+            <button id="tabLogin" class="tab tab--active">Login</button>
+            <button id="tabRegister" class="tab">Register</button>
+          </div>
+
+          <div id="authError" class="alert" style="display: none"></div>
+
+          <form id="loginForm" class="form">
+            <label class="field">
+              <span>Username</span>
+              <input id="loginUsername" autocomplete="username" required />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input id="loginPassword" type="password" autocomplete="current-password" required />
+            </label>
+            <button id="btnForgot" class="ghost" type="button">Forgot password</button>
+            <button class="primary" type="submit">Log in</button>
+          </form>
+
+          <form id="registerForm" class="form" style="display: none">
+            <div class="twoCol">
+              <label class="field">
+                <span>First name (real)</span>
+                <input id="regFirstName" autocomplete="given-name" required />
+              </label>
+              <label class="field">
+                <span>Last name (real)</span>
+                <input id="regLastName" autocomplete="family-name" required />
+              </label>
+            </div>
+            <div class="hint">
+              Both <b>FIRST NAME</b> and <b>LAST NAME</b> must be real and properly formatted (e.g.,
+              <b>Ricardo Sanchez</b>). Fake names will be rejected.
+            </div>
+            <label class="field">
+              <span>Username</span>
+              <input id="regUsername" autocomplete="username" required />
+              <div class="field__hint">3–24 chars. Any text allowed (including profanity).</div>
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input id="regPassword" type="password" autocomplete="new-password" required />
+              <div class="field__hint">At least 6 characters</div>
+            </label>
+            <label class="field">
+              <span>Confirm password</span>
+              <input id="regPasswordConfirm" type="password" autocomplete="new-password" required />
+              <div class="field__hint">Must match the password</div>
+            </label>
+            <button class="primary" type="submit">Create account</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="chatView" class="layout" style="display: none">
+        <aside class="sidebar">
+          <div class="sideTabs">
+            <button id="btnSidebarUsers" class="tabSmall tabSmall--active" type="button">Users</button>
+            <button id="btnSidebarGroups" class="tabSmall" type="button">Groups</button>
+          </div>
+          <div class="search">
+            <input id="userSearch" placeholder="Search…" />
+          </div>
+          <div id="groupJoinBox" class="groupJoin" style="display: none">
+            <input id="joinCode" placeholder="Join code" />
+            <button id="btnJoinByCode" class="primary" type="button">Join</button>
+          </div>
+          <button id="btnCreateGroup" class="ghost" type="button" style="display:none">Create group</button>
+          <div id="usersList" class="users"></div>
+        </aside>
+
+        <main class="main">
+          <div id="chatHeader" class="chatHeader">
+            <div class="chatHeader__left">
+              <div id="chatWithAvatar" class="avatar avatar--lg"></div>
+              <div class="chatHeader__meta">
+                <div id="chatWithName" class="chatHeader__name">Select a user</div>
+                <div id="chatWithStatus" class="chatHeader__status">—</div>
+              </div>
+            </div>
+            <div class="chatHeader__right">
+              <button id="btnVoiceCall" class="ghost" disabled>Voice</button>
+              <button id="btnVideoCall" class="ghost" disabled>Video</button>
+              <button id="btnGroupManage" class="ghost" style="display:none">Manage group</button>
+              <button id="btnLeaveGroup" class="danger" style="display:none">Leave group</button>
+            </div>
+          </div>
+
+          <div id="messages" class="messages"></div>
+
+          <form id="messageForm" class="composer">
+            <input id="messageInput" placeholder="Message…" disabled />
+            <input id="mediaFile" type="file" accept="image/*,video/*" style="display: none" />
+            <button id="btnAttach" type="button" class="ghost" disabled>Photo/Video</button>
+            <button class="primary" type="submit" disabled id="btnSend">Send</button>
+          </form>
+          <div id="mediaPreview" class="mediaPreview" style="display:none"></div>
+        </main>
+      </div>
+
+      <div id="callOverlay" class="overlay" style="display: none">
+        <div class="overlay__card">
+          <div class="overlay__title" id="callTitle">Call</div>
+          <div class="overlay__sub" id="callSub">—</div>
+          <div class="callGrid">
+            <video id="localVideo" autoplay playsinline muted></video>
+            <video id="remoteVideo" autoplay playsinline></video>
+          </div>
+          <div class="overlay__actions">
+            <button id="btnAcceptCall" class="primary" style="display: none">Accept</button>
+            <button id="btnHangup" class="danger">Hang up</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="profileModal" class="modal" style="display: none">
+        <div class="modal__card">
+          <div class="modal__title">Your profile</div>
+          <div class="modal__sub">You can change your username and profile picture. Your real name is locked.</div>
+          <div id="profileError" class="alert" style="display: none"></div>
+
+          <div class="profileRow">
+            <div class="avatar avatar--xl" id="meAvatar"></div>
+            <div class="profileMeta">
+              <div class="profileName" id="meRealName">—</div>
+              <div class="profileUser">@<span id="meUsername">—</span></div>
+            </div>
+          </div>
+
+          <form id="usernameForm" class="form form--compact">
+            <label class="field">
+              <span>New username</span>
+              <input id="newUsername" placeholder="Any text (3–24 chars)" />
+            </label>
+            <button class="primary" type="submit">Update username</button>
+          </form>
+
+          <form id="avatarForm" class="form form--compact">
+            <label class="field">
+              <span>Profile picture</span>
+              <input id="avatarFile" type="file" accept="image/*" />
+            </label>
+            <button class="primary" type="submit">Upload picture</button>
+          </form>
+
+          <div class="modal__actions">
+            <button id="btnCloseProfile" class="ghost" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="createGroupModal" class="modal" style="display: none">
+        <div class="modal__card">
+          <div class="modal__title">Create group</div>
+          <div class="modal__sub">Pick a group name. You become the owner.</div>
+          <div id="createGroupError" class="alert" style="display: none"></div>
+          <form id="createGroupForm" class="form form--compact">
+            <label class="field">
+              <span>Group name</span>
+              <input id="createGroupName" required />
+            </label>
+            <button class="primary" type="submit">Create</button>
+          </form>
+          <div class="modal__actions">
+            <button id="btnCloseCreateGroup" class="ghost" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="groupManageModal" class="modal" style="display: none">
+        <div class="modal__card">
+          <div class="modal__title" id="groupManageTitle">Group</div>
+          <div id="groupManageError" class="alert" style="display: none"></div>
+
+          <div class="manageBlock">
+            <div class="modal__sub">Invite link (join by code)</div>
+            <button id="btnGenerateInvite" class="primary" type="button">Generate invite</button>
+            <div id="inviteLinkRow" class="inviteRow" style="display:none">
+              <label class="field">
+                <span>Invite link</span>
+                <input id="inviteLinkInput" readonly />
+              </label>
+              <button id="btnCopyInvite" class="ghost" type="button">Copy link</button>
+            </div>
+          </div>
+
+          <div class="manageBlock">
+            <div class="modal__sub">Members</div>
+            <div id="groupMembersList" class="users"></div>
+          </div>
+
+          <div class="manageBlock manageGrid">
+            <form id="addMemberForm" class="form form--compact">
+              <label class="field">
+                <span>Add member (select user)</span>
+                <select id="addMemberSelect"></select>
+              </label>
+              <button class="primary" type="submit">Add</button>
+            </form>
+
+            <form id="transferOwnerForm" class="form form--compact">
+              <label class="field">
+                <span>Transfer owner to</span>
+                <select id="transferOwnerSelect"></select>
+              </label>
+              <button class="primary" type="submit">Transfer</button>
+            </form>
+          </div>
+
+          <div class="modal__actions">
+            <button id="btnCloseGroupManage" class="ghost" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="forgotModal" class="modal" style="display: none">
+        <div class="modal__card">
+          <div class="modal__title">Reset password (local)</div>
+          <div class="modal__sub">This demo shows a reset code on screen (no email).</div>
+          <div id="forgotError" class="alert" style="display: none"></div>
+
+          <div id="forgotStep1">
+            <form id="forgotRequestForm" class="form form--compact">
+              <label class="field">
+                <span>Username</span>
+                <input id="fpUsername" autocomplete="username" required />
+              </label>
+              <button class="primary" type="submit">Request reset code</button>
+            </form>
+          </div>
+
+          <div id="forgotStep2" style="display:none">
+            <form id="forgotResetForm" class="form form--compact">
+              <label class="field">
+                <span>Reset code</span>
+                <input id="fpCode" required />
+              </label>
+              <label class="field">
+                <span>New password</span>
+                <input id="fpNewPassword" type="password" autocomplete="new-password" required />
+              </label>
+              <label class="field">
+                <span>Confirm new password</span>
+                <input id="fpNewPasswordConfirm" type="password" autocomplete="new-password" required />
+              </label>
+              <button class="primary" type="submit">Reset password</button>
+            </form>
+          </div>
+
+          <div class="modal__actions">
+            <button id="btnCloseForgot" class="ghost" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
+
