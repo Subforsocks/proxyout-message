@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: proxyout-super-tuff-private-chat
-    env: node
-    plan: free
-    buildCommand: npm install
-    startCommand: npm start
-    autoDeploy: true
-
